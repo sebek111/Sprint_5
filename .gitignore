@@ -1,0 +1,19 @@
+# Кэш и временные файлы
+__pycache__/
+*.pyc
+*.pyo
+*.log
+
+# Настройки IDE
+.vscode/
+.idea/
+
+# Файлы ChromeDriver и WebDriver
+chromedriver.log
+*.swp
+
+# Файлы среды
+.env
+
+# Папка виртуального окружения (если ты используешь venv)
+venv/
