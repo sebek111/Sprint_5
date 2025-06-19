@@ -1,14 +1,21 @@
-from locators.locators import CommonLocators, LoginLocators
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-BASE_URL = "https://qa-desk.stand.praktikum-services.ru/"
+from utils.helpers import login
+from data.urls import BASE_URL
+from data.users import TEST_USER_EMAIL, TEST_USER_PASSWORD
+from locators.locators import CommonLocators
 
-def test_logout_user(driver):
-    driver.get(BASE_URL)
-    driver.find_element(*CommonLocators.LOGIN_REGISTER_BUTTON).click()
+class TestLogout:
 
-    driver.find_element(*LoginLocators.EMAIL_INPUT).send_keys("existing@example.com")
-    driver.find_element(*LoginLocators.PASSWORD_INPUT).send_keys("Test1234")
-    driver.find_element(*LoginLocators.SUBMIT_BUTTON).click()
+    def test_logout_user(self, driver):
+        login(driver, TEST_USER_EMAIL, TEST_USER_PASSWORD)
 
-    driver.find_element(*CommonLocators.LOGOUT_BUTTON).click()
-    assert driver.find_element(*CommonLocators.LOGIN_REGISTER_BUTTON).is_displayed()
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable(CommonLocators.LOGOUT_BUTTON)
+        ).click()
+
+        login_button = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(CommonLocators.LOGIN_REGISTER_BUTTON)
+        )
+        assert login_button.is_displayed()
